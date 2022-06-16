@@ -4,7 +4,9 @@ pragma solidity ^0.8.4;
 import "hardhat/console.sol";
 
 /**
-    @notice This is a calculator that will be able to :
+    @title SolidityCalculator
+    @author Marina Ganopolsky, @mganopolsky
+    @notice This is a solidity calculator that will be able to :
         * add
         * subtract
         * multiple
@@ -23,6 +25,8 @@ contract SolidityCalculator {
 
     uint totalCalcCount = 0;
 
+    // Events that will be emited when calculations are performed 
+    // to update calculation counts
     event TotalTxnCount(uint _count);
     event AdditionTxnCount(uint _count);
     event SubtractionTxnCount(uint _count);
@@ -33,6 +37,7 @@ contract SolidityCalculator {
     event CalculationResult(uint _result);
 
     // types of calculations that will be performed
+    // these will be used as the keys to the calculationHistory mapping
     string public constant additionName = "add";
     string public constant subtractionName = "subtraction";
     string public constant divisionName = "division";
@@ -52,6 +57,9 @@ contract SolidityCalculator {
 
     /**
     Addition function
+    @param _param1 - the number the function will be adding to _param2
+    @param _param2 - the number the function will be adding to _param1
+    @return uint
      */
     function add(uint _param1, uint _param2) public returns(uint) {
         // increase the addition calculation count
@@ -73,6 +81,9 @@ contract SolidityCalculator {
 
     /**
     Subtraction function
+    @param _param1 - the number the function will be subtracting from
+    @param _param2 - the number the function will be subtracting from _param1
+    @return uint
      */
     function subtract(uint _param1, uint _param2) public returns(uint) {
         // since we're dealing with unsigned ints, we should throw an error 
@@ -98,6 +109,9 @@ contract SolidityCalculator {
 
     /**
     Multiplication function
+    @param _param1 - the first number the function will be multiplying 
+    @param _param2 - the second number the function will be multiplying by _param1
+    @return uint
      */
     function multiply(uint _param1, uint _param2) public returns(uint) {
         // increase the calculation count
@@ -117,6 +131,9 @@ contract SolidityCalculator {
 
     /**
     Division function
+    @param _param1 - numerator
+    @param _param2 - denominator
+    @return unit the result of the division
      */
     function divide(uint _param1, uint _param2) public returns(uint) {
         //since we can't divide by a 0, have to check for this
@@ -137,6 +154,9 @@ contract SolidityCalculator {
 
     /**
     Raising to a pwer function
+    @param _number - base number
+    @param _power - the power the base number is being raised to
+    @return unit the result of the calculation
      */
     function raiseToThePower(uint _number, uint _power) public  returns(uint) {
         // increase the calculation count
@@ -156,6 +176,9 @@ contract SolidityCalculator {
 
     /**
     Modulus function
+    @param _param1 - the original number
+    @param _param2 - the modulus 
+    @return unit the result of the calculation
      */
     function modulo(uint _param1, uint _param2) public returns(uint) {
         // increase the calculation count
@@ -173,30 +196,49 @@ contract SolidityCalculator {
         return result;
     }
 
+    /**
+     @return  uint the count of addition transactions
+     */
     function getAddCount() public view returns(uint) {
         return calculationHistory[additionName];
     }
 
+    /**
+     @return  uint the count of subtraction transactions
+     */
     function getSubtractionCount() public view returns(uint) {
         return calculationHistory[subtractionName];
     }
 
+    /**
+     @return  uint the count of division transactions
+     */
     function getDivisionCount() public view returns(uint) {
         return calculationHistory[divisionName];
     }
 
+    /**
+     @return  uint the count of multiplication transactions
+     */
     function getMultiplicationCount() public view returns(uint) {
         return calculationHistory[multiplicationName];
     }
 
+    /**
+     @return  uint the count of modulo transactions
+     */
     function getModuloCount() public view returns(uint) {
         return calculationHistory[moduloName];
     }
 
+    /**
+     @return  uint the count of power-to transactions
+     */
     function getPowerOfCount() public view returns(uint) {
         return calculationHistory[powerOfName];
     }
 
+    // returns the total transaction count
     function getTotalCalculationCount() public view returns(uint) {
         return totalCalcCount;
     }
